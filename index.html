@@ -1,0 +1,160 @@
+<body>
+  <head>
+
+  <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/5.7.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+
+if(localStorage.getItem("DOo") == "1"){
+  window.location.replace('0.html');
+}
+
+  PAJTIK = []
+  var config = {
+    apiKey: "AIzaSyBJ5in_wS58rDFNIp_zuHiRTGJ9UZ9dOXw",
+    authDomain: "pajtigen.firebaseapp.com",
+    databaseURL: "https://pajtigen.firebaseio.com",
+    projectId: "pajtigen",
+    storageBucket: "pajtigen.appspot.com",
+    messagingSenderId: "928328788430"
+  };
+  firebase.initializeApp(config);
+  db = firebase.database();
+
+  function writeUserData(pID, pName, lol) {
+    firebase.database().ref('users/' + pID).set({
+      username: pName,
+      lol: lol,
+    });
+  }
+
+  /*writeUserData(1, "Janó",0);
+  writeUserData(2, "Attila",0);
+  writeUserData(3, "Melinda",0);
+  writeUserData(4, "Tünde",0);
+  writeUserData(5, "Szabi",0);*/
+  init();
+
+  Array.prototype.remove = function() {
+    var what, a = arguments, L = a.length, ax;
+    while (L && this.length) {
+        what = a[--L];
+        while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+        }
+    }
+    return this;
+};
+
+function init(){
+  PAJTIK = []
+  var leadsRef = db.ref('users');
+  leadsRef.on("value", function(snap) {
+    //console.log(snap.val())
+    snap.forEach(function(childSnapshot) {
+      var key = 88;
+      var childData = childSnapshot.val();
+      console.log(key, childData);
+      PAJTIK.push(childData);
+    });
+    document.getElementById("par").innerHTML = "Válaszd ki a saját neved";
+  });
+}
+
+function getPajtiName1(){
+  getPajtiNameMAIN("Janó");
+}
+function getPajtiName2(){
+  getPajtiNameMAIN("Attila");
+}
+function getPajtiName3(){
+  getPajtiNameMAIN("Melinda");
+}
+function getPajtiName4(){
+  getPajtiNameMAIN("Tünde");
+}
+function getPajtiName5(){
+  getPajtiNameMAIN("Szabi");
+}
+
+function getPajtiNameMAIN(cPName) {
+  localStorage.setItem("DOo", "1");
+  init();
+    L = []
+    //var cPName = document.getElementById("doj").value;
+    console.log("PAJTIK[0]");
+    console.log(PAJTIK[0]["username"]);
+    for ( i = 0; i< PAJTIK.length; i++){
+      if(PAJTIK[i]["lol"]==0){
+        L.push(PAJTIK[i]["username"]);
+      }
+    }
+    L.remove(cPName);
+    //console.log(L);
+    //console.log(Math.floor((Math.random() * L.length) + 0));
+    got = L[Math.floor((Math.random() * L.length) + 0)]
+    //console.log(got);
+    switch (got) {
+      case "Janó": writeUserData(1, "Janó",1);
+      window.location.replace('1.html');
+      break;
+      case "Attila": writeUserData(2, "Attila",1);
+      window.location.replace('2.html');
+      break;
+      case "Melinda": writeUserData(3, "Melinda",1);
+      window.location.replace('3.html');
+      break;
+      case "Tünde": writeUserData(4, "Tünde",1);
+      window.location.replace('4.html');
+      break;
+      case "Szabi": writeUserData(5, "Szabi",1);
+      window.location.replace('5.html');
+      break;
+      default:
+    }
+    document.getElementById("par").innerHTML = "Kihuztad: " + got;
+}
+
+
+
+/*leadsRef.on("value", function(snapshot) {
+   PAJTIK.push(snapshot.val());
+}, function (error) {
+   console.log("Error: " + error.code);
+});*/
+
+
+
+
+
+
+</script>
+<div class="jumbotron">
+
+
+<p id="par" ></p>
+  <input type="button" value="Jano" onclick="getPajtiName1()">
+  <input type="button" value="Attila" onclick="getPajtiName2()">
+  <input type="button" value="Melinda" onclick="getPajtiName3()">
+  <input type="button" value="Tunde" onclick="getPajtiName4()">
+  <input type="button" value="Szabi" onclick="getPajtiName5()">
+  </div>
+
+
+</body>
